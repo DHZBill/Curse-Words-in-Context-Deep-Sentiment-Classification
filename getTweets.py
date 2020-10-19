@@ -84,13 +84,14 @@ def findNumUniqueTweets():
     uniqueSet = set()
     for row in twitter.iterrows():
       if(firstrow == 0) :
-        firstrow == row
+        firstrow = row
         continue
       text = row[1][0]
+      #print(text)
       uniqueSet.add(text)
     print("unique ones", len(uniqueSet))
 
 
-#runTweetsScraper()
+findNumUniqueTweets()
 
 
