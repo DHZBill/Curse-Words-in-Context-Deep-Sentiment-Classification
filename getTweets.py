@@ -22,14 +22,14 @@ cursewordsCatg = {
 7:"multiple-worded"}
 
 allCurseWords= [
-  set(["fuck","shit","pissed","screw"]), 
-  set(["nigger","chink","niglet", "wetback"]),
-  set(["dick","cunt","pussy","fag","queer","boner","dong","slut","dyke","pimp","whore","hoe","bitch","cock","tramp","cum","schlong","spunk","skank","motherfucker","tit","gay","mothafucker","screw","blowjob"]),
+  set(["fuck","fu*k", "f*ck", "f**k", "sh*t","shit","pissed","screw"]), 
+  set(["nigger","n*gger", "n*gg*r", "chink","niglet", "wetback"]),
+  set(["dick","di*k", "d*ck", "cunt","pussy","pu**y","fag","queer","qu**r", "boner","dong","slut","sl*t","dyke","pimp","whore","hoe","bitch","b*tch", "bi*ch","cock","tramp","cum","schlong","spunk","skank","motherfucker","tit","gay","mothafucker","screw","blowjob"]),
   set(["hell","damn"]),
-  set(["ass","queaf","shart","urine","rimming","arse","shat","crap"]),
+  set(["ass","a**", "*ss", "queaf","shart","urine","rimming","arse","shat","crap"]),
   set(["retard","spaz"]),
-  set(["tit","motherfucker","cum","hoe","chink","gay"]),
-  set(["son of a bitch","doggie style","fucked up","ass"])
+  set(["tit","cum","hoe","chink","gay"]),
+  set(["son of a bitch","doggie style","fucked up"])
 ]
 
 allHashtags = [
@@ -72,26 +72,37 @@ def runTweetsScraper():
           for cursewordCatg, cursewordSet in enumerate(allCurseWords):
             for curseword in cursewordSet:
               try:
-                getTweets(wen_bearer, "?q=%23" + hashtag + "%20" + curseword +"&lang=en&tweet_mode=extended&count="+str(kCountPerRequest), curseword, hashtag, writer, sentiment, cursewordCatg)
+                getTweets(kez_bearer, "?q=%23" + hashtag + "%20" + curseword +"&lang=en&tweet_mode=extended&count="+str(kCountPerRequest), curseword, hashtag, writer, sentiment, cursewordCatg)
               except Exception as e:
                 print("An exception occurred at", hashtag, curseword)
                 print(e)
 
 def findNumUniqueTweets():
     twitter = pd.read_csv('./well_formatted.csv')
+    
     print("all", twitter.shape)
     firstrow = 0
     uniqueSet = set()
-    for row in twitter.iterrows():
-      if(firstrow == 0) :
-        firstrow = row
-        continue
-      text = row[1][0]
-      #print(text)
-      uniqueSet.add(text)
-    print("unique ones", len(uniqueSet))
+    # with open('unique.csv', 'w', newline='') as file:
+    #   writer = csv.writer(file)
 
+    #   for row in twitter.iterrows():
+    #     if(firstrow == 0) :
+    #       firstrow = row
+    #       writer.writerow(row)
+    #       continue
+    #     text = row[1][0]
+    #     #print(text)
+    #     if(text not in uniqueSet):
+    #       #writer.writerow(row)
+    #       uniqueSet.add(text)
+    # print("unique ones", len(uniqueSet))
+    twitter2 = twitter.sort_values(["text"])
+    twitter2.drop_duplicates(subset= ["text"], inplace=True)
+    twitter2.to_csv("unique_tweets.csv", index=False)
 
+    print(twitter2.shape)
+runTweetsScraper()
 findNumUniqueTweets()
 
 
