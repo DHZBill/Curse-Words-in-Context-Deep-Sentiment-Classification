@@ -47,6 +47,7 @@ stopwords= set(["RT"])
 def remove_stopwords(text):
     for stopword in stopwords:
        text = text.replace(stopword, '') 
+    text = text.replace('"', '') 
     return text
 
 def remove_URL(text):
@@ -70,8 +71,15 @@ def remove_emoji(text):
 def remove_punct(text):
     table=str.maketrans('','',string.punctuation)
     return text.translate(table)
+
 def remove_hashtags(text):
-  return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)"," ",text).split())
+    text = text.split(' ')
+    res = ""
+    for piece in text:
+      if len(piece)>=1 and piece[0] != '#':
+        res+= piece + " "
+   
+    return res
 
 def getTweets(bearer, params, curseword, hashtag, writer, sentiment, cursewordCatg): #deleted headers
 
@@ -118,9 +126,10 @@ def findUniqueTweets():
     twitter['text'] = twitter['text'].apply(lambda x : remove_punct(x))
     twitter['text'] = twitter['text'].apply(lambda x : to_lower(x))
     twitter['text'] = twitter['text'].apply(lambda x : remove_stopwords(x))
-
     twitter2 = twitter.sort_values(["text"])
     twitter2.drop_duplicates(subset= ["text"], inplace=True)
+    twitter2 = twitter2.dropna(how = 'all') 
+    twitter2.drop(twitter2[twitter2['curseword'] == "a**"].index, inplace = True) 
 
     print("all: ", twitter.shape)
     twitter2.to_csv("unique_tweets.csv", index=False)
@@ -138,6 +147,6 @@ def extractLinesWithCurseWords():
         print("Line{}: {}".format(count, line.strip()))
         count +=1
 
-
-runTweetsScraper()
+#runTweetsScraper()
 findUniqueTweets()
+#need to clean up hashtags
