@@ -1,12 +1,14 @@
 import requests
 import json
 import csv
+import string
+
+import re
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 
 #bearer tokens to access Tweets through API
 kez_bearer = "AAAAAAAAAAAAAAAAAAAAAChUGwEAAAAA7ump2ucNmOaE89xv70KhDZqL1qQ%3DVPQSNjNv7BIlk6sO2a0FfU7Rqu75nqFBv08t4KnYk6kavtx2KT"
 wen_bearer = "AAAAAAAAAAAAAAAAAAAAADAzIgEAAAAAa8jC33lX8w0w74HSYSN%2B7jBSmkc%3Delyo4dNtxVtexSCUNBEpbeDSmRv8lXlK1dbcyMEr5OTgvX9FGO"
-
 
 kLimitPerCurseWord = 10000
 kCountPerRequest = 100
@@ -26,7 +28,7 @@ allCurseWords= [
   set(["nigger","n*gger", "n*gg*r", "chink","niglet", "wetback"]),
   set(["dick","di*k", "d*ck", "cunt","pussy","pu**y","fag","queer","qu**r", "boner","dong","slut","sl*t","dyke","pimp","whore","hoe","bitch","b*tch", "bi*ch","cock","tramp","cum","schlong","spunk","skank","motherfucker","tit","gay","mothafucker","screw","blowjob"]),
   set(["hell","damn"]),
-  set(["ass","a**", "*ss", "queaf","shart","urine","rimming","arse","shat","crap"]),
+  set(["ass", "queaf","shart","urine","rimming","arse","shat","crap"]),
   set(["retard","spaz"]),
   set(["tit","cum","hoe","chink","gay"]),
   set(["son of a bitch","doggie style","fucked up"])
@@ -40,7 +42,37 @@ allHashtags = [
   set(["sarcasm"])
 ]
 
-#helper function
+stopwords= set(["RT"])
+
+def remove_stopwords(text):
+    for stopword in stopwords:
+       text = text.replace(stopword, '') 
+    return text
+
+def remove_URL(text):
+    url = re.compile(r'https?://\S+|www\.\S+')
+    return url.sub(r'',text)
+def to_lower(text):
+    return text.lower()
+def remove_html(text):
+    html=re.compile(r'<.*?>')
+    return html.sub(r'',text)
+def remove_emoji(text):
+    emoji_pattern = re.compile("["
+                           u"\U0001F600-\U0001F64F"  # emoticons
+                           u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+                           u"\U0001F680-\U0001F6FF"  # transport & map symbols
+                           u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                           u"\U00002702-\U000027B0"
+                           u"\U000024C2-\U0001F251"
+                           "]+", flags=re.UNICODE)
+    return emoji_pattern.sub(r'', text)
+def remove_punct(text):
+    table=str.maketrans('','',string.punctuation)
+    return text.translate(table)
+def remove_hashtags(text):
+  return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)"," ",text).split())
+
 def getTweets(bearer, params, curseword, hashtag, writer, sentiment, cursewordCatg): #deleted headers
 
   headers = {'Authorization': ('bearer '+bearer)}
@@ -77,32 +109,35 @@ def runTweetsScraper():
                 print("An exception occurred at", hashtag, curseword)
                 print(e)
 
-def findNumUniqueTweets():
+def findUniqueTweets():
     twitter = pd.read_csv('./well_formatted.csv')
-    
-    print("all", twitter.shape)
-    firstrow = 0
-    uniqueSet = set()
-    # with open('unique.csv', 'w', newline='') as file:
-    #   writer = csv.writer(file)
+    twitter['text'] = twitter['text'].apply(lambda x : remove_hashtags(x))
+    twitter['text'] = twitter['text'].apply(lambda x : remove_URL(x))
+    twitter['text'] = twitter['text'].apply(lambda x : remove_html(x))
+    twitter['text'] = twitter['text'].apply(lambda x : remove_emoji(x))
+    twitter['text'] = twitter['text'].apply(lambda x : remove_punct(x))
+    twitter['text'] = twitter['text'].apply(lambda x : to_lower(x))
+    twitter['text'] = twitter['text'].apply(lambda x : remove_stopwords(x))
 
-    #   for row in twitter.iterrows():
-    #     if(firstrow == 0) :
-    #       firstrow = row
-    #       writer.writerow(row)
-    #       continue
-    #     text = row[1][0]
-    #     #print(text)
-    #     if(text not in uniqueSet):
-    #       #writer.writerow(row)
-    #       uniqueSet.add(text)
-    # print("unique ones", len(uniqueSet))
     twitter2 = twitter.sort_values(["text"])
     twitter2.drop_duplicates(subset= ["text"], inplace=True)
+
+    print("all: ", twitter.shape)
     twitter2.to_csv("unique_tweets.csv", index=False)
+    print("unique: ",twitter2.shape)
 
-    print(twitter2.shape)
+def extractLinesWithCurseWords():
+  file1 = open('tweets_clean.csv', 'r') 
+  Lines = file1.readlines() 
+  #curse_words = ' ' + ' | '.join(allCurseWords[0]) + ' '
+  count = 0
+  # Strips the newline character 
+  for line in Lines:
+    for j in range(len(allCurseWords)):
+      if any(x in line for x in allCurseWords[j]): 
+        print("Line{}: {}".format(count, line.strip()))
+        count +=1
+
+
 runTweetsScraper()
-findNumUniqueTweets()
-
-
+findUniqueTweets()
