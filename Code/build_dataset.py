@@ -59,9 +59,9 @@ def data_cleaning(df):
 
 def balance_data(df):
     df = df.drop(df.query('sentiment == 0').sample(frac=0.7).index)
-    df = df.drop(df.query('sentiment == 4').sample(frac=0.7).index)
-    df = df[df["sentiment"] != 3]
-    df.loc[df['sentiment'] == 4, "sentiment"] = 3
+    df = df.drop(df.query('sentiment == 4').sample(frac=0.6).index)
+    #df = df[df["sentiment"] != 3]
+    #df.loc[df['sentiment'] == 4, "sentiment"] = 3
     return df
 
 

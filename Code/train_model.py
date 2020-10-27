@@ -13,7 +13,7 @@ tokenizer = FullTokenizer(vocab_file=VOCAB_PATH)
 
 train_val, test = build_dataset.prepare_train_test_from_file(DATASET_PATH)
 data = preprocess.SentimentAnalysisData(train_val, test, tokenizer, max_seq_len=MAX_SEQ_LEN)
-model = build_model.create_model(data.max_seq_len, 4)
+model = build_model.create_model(data.max_seq_len, 5)
 model.summary()
 model.compile(
     optimizer=keras.optimizers.Adam(1e-5),
@@ -27,6 +27,10 @@ history = model.fit(
     validation_split=0.2,
     batch_size=32,
     shuffle=True,
-    epochs=20,
+    epochs=12,
     verbose=1
 )
+
+_, test_acc = model.evaluate(data.test_x, data.test_y)
+_, train_acc = model.evaluate(data.train_x, data.train_y)
+print("Test Accuracy:" + str(test_acc))

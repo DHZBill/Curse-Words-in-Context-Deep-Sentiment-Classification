@@ -24,9 +24,9 @@ def create_model(max_seq_len, num_classes, bert_ckpt_file = BERT_CKPT_FILE):
 
     print("bert shape", bert_output.shape)
     cls_out = keras.layers.Lambda(lambda seq: seq[:, 0, :])(bert_output)
-    # cls_out = keras.layers.Dropout(0.5)(cls_out)
-    # logits = keras.layers.Dense(units=768, activation="tanh")(cls_out)
-    logits = keras.layers.Dropout(0.2)(cls_out)
+    cls_out = keras.layers.Dropout(0.5)(cls_out)
+    logits = keras.layers.Dense(units=1024, activation="tanh")(cls_out)
+    logits = keras.layers.Dropout(0.2)(logits)
     logits = keras.layers.Dense(units=num_classes, activation="softmax")(logits)
 
     model = keras.Model(inputs=input_ids, outputs=logits)
