@@ -72,16 +72,23 @@ def remove_hashtags(text):
   array = text.split(' ')
   isPreviousHashtag = False
   previousWord = ""
+  isLast = True
   #print("before", array[::-1])
   for word in array[::-1]:
     if(len(word)<1 or word == 'URL' or word == 'USERID'):
       continue
+
     if(word[0] == '#'):
+      
       if(isPreviousHashtag):
         text = text.replace(word, "")
         text = text.replace(previousWord, "")
+      if(isLast):
+        text = text.replace(word, "")
+        isLast = False
       previousWord = word
       isPreviousHashtag = True
+      
     else:
       isPreviousHashtag = False
   #print("after", text)
@@ -297,3 +304,4 @@ def countExamplesByCategory():
 
 findUniqueTweets()
 countExamplesByCategory()
+#print(remove_hashtags("I #find it #funny hello #sarcasm #hello#hello"))
