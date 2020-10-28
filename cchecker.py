@@ -37,7 +37,7 @@ def is_curse_word(token='', category='general', cwords=df_reg):
             return True
     return False
 
-print(is_curse_word(token='ass'))
+print(is_curse_word(token='cass'))
 
 '''
 Sanity check
