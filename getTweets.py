@@ -13,6 +13,7 @@ wen_bearer = "AAAAAAAAAAAAAAAAAAAAADAzIgEAAAAAa8jC33lX8w0w74HSYSN%2B7jBSmkc%3Del
 kLimitPerCurseWord = 10000
 kCountPerRequest = 100
 sentiments = {0: "positive", 1:"sad", 2:"angry", 3:"fear", 4:"sarcasm"}
+
 cursewordsCatg = {
 0: "general",
 1: "race",
@@ -26,7 +27,7 @@ cursewordsCatg = {
 allCurseWords= [
   set(["fuck","fu*k", "f*ck", "f**k", "sh*t","shit","pissed","screw"]), 
   set(["nigger","n*gger", "n*gg*r", "chink","niglet", "wetback"]),
-  set(["dick","di*k", "d*ck", "cunt","pussy","pu**y","fag","queer","qu**r", "boner","dong","slut","sl*t","dyke","pimp","whore","hoe","bitch","b*tch", "bi*ch","cock","tramp","cum","schlong","spunk","skank","motherfucker","tit","gay","mothafucker","screw","blowjob"]),
+  set(["dick","di*k", "d*ck", "cunt","pussy","pu**y", "fag","queer","qu**r", "boner","dong","slut","sl*t","dyke","pimp","whore","hoe","bitch","b*tch", "bi*ch","cock","tramp","cum","schlong","spunk","skank","motherfucker","tit","gay","mothafucker","screw","blowjob"]),
   set(["hell","damn"]),
   set(["ass", "queaf","shart","urine","rimming","arse","shat","crap"]),
   set(["retard","spaz"]),
@@ -101,8 +102,10 @@ def tweetContainsCurseWord(text):
   text = text.split(' ')
   for word in text:
     for i in range(len(allCurseWords)):
-      if( word in allCurseWords[i]):
-        return True
+      for curseword in allCurseWords[i]:
+        if(curseword in word):
+          return True
+  print(text)
   return False
 def keepNonAmbigousTweets(text):
   wordSentiment = -1
@@ -170,7 +173,21 @@ def getTweets(bearer, params, curseword, hashtag, writer, sentiment, cursewordCa
       break
     params = res["search_metadata"]["next_results"]
   print("#", hashtag, curseword, "got", len(uniqueTweets), "tweets")
+sentiments = {0: "positive", 1:"sad", 2:"angry", 3:"fear", 4:"sarcasm"}
 
+sentimentMap = {
+  "enthusiasm": 0,
+  "happiness": 0,
+  "love":0,
+  "worry":3,
+  "hate": 2,
+  "fun": 0,
+  "relief": 0,
+  "surprise": 3,
+  "sadness": 1,
+  "empty": 1,
+  
+}
 
 def runTweetsScraper():
   with open('well_formatted.csv', 'a', newline='') as file:
@@ -252,22 +269,26 @@ def extractLinesWithCurseWordsTXT(filename, sentiment, hashtag):
 def extractLinesWithEmojiesCSV():
   with open('well_formatted.csv', 'a', newline='') as file:
       writer = csv.writer(file)
-      file1 = pd.read_csv('1billion.csv') 
+      file1 = pd.read_csv('text_emotion.csv') 
       count = 0
       # Strips the newline character 
-      for line in file1.itertuples():
+      for line in file1.iterrows():
         try:
-          #print(line[6])
-          comment = line[6]
+          comment = line[1]["content"]
           for j in range(len(allCurseWords)):
             if any(x in comment for x in allCurseWords[j]) :
-              for k in range(len(allEmojis)):
-                if any(x in comment for x in allEmojis[k]):
-                  print(k, "Line{}: {}".format(count, comment))
-                  writer.writerow([comment, k, "UNDEFINED", "UNDEFINED", "UNDEFINED"])
-                  count +=1
+              # for k in range(len(allEmojis)):
+              #   if any(x in comment for x in allEmojis[k]):
+              if(line[1]["sentiment"] in sentimentMap):
+
+                sentimentLabel = sentimentMap[line[1]["sentiment"]]                
+                print(line[1]["sentiment"],sentimentLabel,  "Line{}: {}".format(count, comment))
+
+                #writer.writerow([comment, sentimentLabel, "UNDEFINED", "UNDEFINED", "UNDEFINED"])
+                count +=1
         except Exception as e: 
-          print("ignore this idea")
+          pass
+          #print("ignore this idea")
 
 def extractLinesWithCurseWordsCSV():
   with open('well_formatted.csv', 'a', newline='') as file:
@@ -301,7 +322,7 @@ def countExamplesByCategory():
 
 #runTweetsScraper()
 #extractLinesWithCurseWordsCSV()
-
-findUniqueTweets()
-countExamplesByCategory()
+extractLinesWithEmojiesCSV()
+#findUniqueTweets()
+#countExamplesByCategory()
 #print(remove_hashtags("I #find it #funny hello #sarcasm #hello#hello"))
