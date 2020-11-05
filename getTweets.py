@@ -25,13 +25,13 @@ cursewordsCatg = {
 7:"multiple-worded"}
 
 allCurseWords= [
-  set(["fuck","fu*k", "f*ck", "f**k", "sh*t","shit","pissed","screw"]), 
+  set(["fuck", "fu*k", "f*ck", "f**k", "sh*t","shit","pissed","screw"]), 
   set(["nigger","n*gger", "n*gg*r", "chink","niglet", "wetback"]),
-  set(["dick","di*k", "d*ck", "cunt","pussy","pu**y", "fag","queer","qu**r", "boner","dong","slut","sl*t","dyke","pimp","whore","hoe","bitch","b*tch", "bi*ch","cock","tramp","cum","schlong","spunk","skank","motherfucker","tit","gay","mothafucker","screw","blowjob"]),
+  set(["dick","di*k", "d*ck", "cunt","pussy","pu**y", "fag ","queer","qu**r", "boner","dong","slut","sl*t","dyke","pimp","whore","hoe","bitch","b*tch", "bi*ch","cock","tramp","cum ","schlong","spunk","skank","motherfucker","tit","gay","mothafucker","blowjob"]),
   set(["hell","damn"]),
-  set(["ass", "queaf","shart","urine","rimming","arse","shat","crap"]),
+  set([" ass ", "queaf","shart","urine","rimming","arse","shat ","crap "]),
   set(["retard","spaz"]),
-  set(["tit","cum","hoe","chink","gay"]),
+  set([" tit ","hoe","chink","gay "]),
   set(["son of a bitch","doggie style","fucked up"])
 ]
 
@@ -51,6 +51,15 @@ allEmojis = [
   set([" :-o ", " :$ ", " :-O ", " o_O ", " O_o ", " :‑O ", " :O ", " :‑o ", " :o ", " :-0 ", " 8‑0 ",">:O",  " :-l ", " ,:-| "]),
 ]
 
+sentimentToNumber = {
+  "surprise": 3,
+  "fear": 3,
+  "sadness": 1,
+  "anger": 2,
+  "joy": 0,
+
+
+}
 stopwords= set(["RT"])
 
 def remove_stopwords(text):
@@ -97,7 +106,8 @@ def remove_hashtags(text):
 #  return re.sub("(?:\\s*#\\w+)+\\s*$", "", text)
 
 def tweetIsNotTooShort(text):
-  return len(text.split(' '))>5
+  return len(text.split(' '))>6
+
 def tweetContainsCurseWord(text):
   text = text.split(' ')
   for word in text:
@@ -154,7 +164,7 @@ def remove_userids(text):
     return res
 
 def getTweets(bearer, params, curseword, hashtag, writer, sentiment, cursewordCatg): #deleted headers
-  
+  print("get Tweets", curseword, hashtag, sentiment)
   headers = {'Authorization': ('bearer '+bearer)}
   base_url = "https://api.twitter.com/1.1/search/tweets.json"
   uniqueTweets = set()
@@ -166,13 +176,14 @@ def getTweets(bearer, params, curseword, hashtag, writer, sentiment, cursewordCa
     for tweet in res["statuses"]:
       if(tweet["full_text"] not in uniqueTweets):
         print(curseword, hashtag, tweet["full_text"])
-        writer.writerow([tweet["full_text"], sentiment, hashtag, curseword, cursewordCatg])
+        #writer.writerow([tweet["full_text"], sentiment, hashtag, curseword, cursewordCatg])
         uniqueTweets.add(tweet["full_text"])
       
     if("next_results" not in res["search_metadata"]):
       break
     params = res["search_metadata"]["next_results"]
   print("#", hashtag, curseword, "got", len(uniqueTweets), "tweets")
+
 sentiments = {0: "positive", 1:"sad", 2:"angry", 3:"fear", 4:"sarcasm"}
 
 sentimentMap = {
@@ -200,7 +211,7 @@ def runTweetsScraper():
               hashtag_urlencoded = urllib.parse.quote_plus(hashtag)
               curseword_urlencoded = urllib.parse.quote_plus(curseword)
               try:
-                getTweets(kez_bearer, "?q=%23" + hashtag + "%20" + curseword +"&lang=en&tweet_mode=extended&count="+str(kCountPerRequest), curseword, hashtag, writer, sentiment, cursewordCatg)
+                getTweets(wen_bearer, "?q=%23" + hashtag + "%20" + curseword +"&lang=en&tweet_mode=extended&count="+str(kCountPerRequest), curseword, hashtag, writer, sentiment, cursewordCatg)
                 #getTweets(kez_bearer, "?q=%23" + hashtag_urlencoded + "%20" + curseword_urlencoded +"&lang=en&tweet_mode=extended&count="+str(kCountPerRequest), curseword, hashtag, writer, sentiment, cursewordCatg)
               except Exception as e:
                 print("An exception occurred at", hashtag, curseword)
@@ -235,14 +246,14 @@ def findUniqueTweets():
     twitter = twitter[twitter['text'].apply(tweetContainsCurseWord) == True]
     print("after dropping tweets without cursewords: ", twitter.shape)
 
-    #step 7: remove tweets that are less than 6 words long
-    twitter = twitter[twitter['text'].apply(tweetIsNotTooShort) == True]
-    print("after dropping short tweets: ", twitter.shape)
-
-    #step 8: remove emojis, punctuation
+    #step 7: remove emojis, punctuation
     twitter['text'] = twitter['text'].apply(lambda x : remove_emoji(x))
     twitter['text'] = twitter['text'].apply(lambda x : remove_punct(x))
     
+    #step 8: remove tweets that are less than 6 words long
+    twitter = twitter[twitter['text'].apply(tweetIsNotTooShort) == True]
+    print("after dropping short tweets: ", twitter.shape)
+
     twitter2 = twitter.sort_values(["text"])
     twitter2.drop_duplicates(subset= ["text"], inplace=True)
     print("after dropping duplicates: ", twitter2.shape)
@@ -250,21 +261,28 @@ def findUniqueTweets():
     twitter2.to_csv("unique_tweets.csv", index=False)
     print("unique: ",twitter2.shape)
 
-def extractLinesWithCurseWordsTXT(filename, sentiment, hashtag):
-  with open('well_formatted.csv', 'a', newline='') as file:
+def extractLinesWithCurseWordsTXT(filename, sentiment = -1, hashtag = ""):
+  with open('testset2.csv', 'a', newline='') as file:
       writer = csv.writer(file)
       file1 = open(filename, 'r') 
       Lines = file1.readlines() 
       count = 0
       # Strips the newline character 
       for line in Lines:
-        for j in range(len(allCurseWords)):
-          if any(x in line for x in allCurseWords[j]):
-            line = line.split('\t')
-            if(float(line[3].strip())>0.65):
-              print("Line{}: {}".format(count, line[1]))
-              writer.writerow([line[1] + " "+ hashtag, sentiment, "UNDEFINED", "UNDEFINED", "UNDEFINED"])
-              count +=1
+        line = line.split('\t')
+        #print(line)
+        word = re.compile('[^a-zA-Z]').sub("", line[2])
+        if(word in sentimentToNumber):
+          sentiment = sentimentToNumber[word]
+          line = line[1]
+          for j in range(len(allCurseWords)):
+            if any(x in line for x in allCurseWords[j]):
+              #line = line.split('\t')
+              #print(line)
+              #if(float(line[3].strip())>0.65):
+                #print("Line{}: {}".format(count, line), word, sentiment)
+                writer.writerow([line, sentiment, word, "UNDEFINED", "UNDEFINED"])
+                count +=1
               
 def extractLinesWithEmojiesCSV():
   with open('well_formatted.csv', 'a', newline='') as file:
@@ -291,29 +309,33 @@ def extractLinesWithEmojiesCSV():
           #print("ignore this idea")
 
 def extractLinesWithCurseWordsCSV():
-  with open('well_formatted.csv', 'a', newline='') as file:
+  with open('testset.csv', 'w', newline='') as file:
       writer = csv.writer(file)
       file1 = pd.read_csv('sarcasm.csv') 
       count = 0
       # Strips the newline character 
       for line in file1.itertuples():
         try:
-          if(count>5000):
-            break
+          if(count>5300):
+            continue
           #print(line[6])
           comment = line.comment
           if(line.label!=1):
             continue
           for j in range(len(allCurseWords)):
             if any(x in comment for x in allCurseWords[j]) :
-              print("Line{}: {}".format(count, comment))
-              writer.writerow([comment + " #sarcasm ", 4, "UNDEFINED", "UNDEFINED", j])
+              if(len(comment)<50):
+                continue
               count +=1
+              if(count>5000):
+                print("Line{}: {}".format(count, comment))
+                writer.writerow([comment, 4, "UNDEFINED", "UNDEFINED", j])
+              
         except Exception as e: 
           print("ignore this idea") 
 
-def countExamplesByCategory():
-  df = pd.read_csv('./unique_tweets.csv')
+def countExamplesByCategory(filename):
+  df = pd.read_csv(filename)
   print("positive", len(df[(df['sentiment']==0)]))
   print("angry", len(df[(df['sentiment']==2)]))
   print("fear", len(df[(df['sentiment']==3)]))
@@ -321,8 +343,5 @@ def countExamplesByCategory():
   print("sad", len(df[(df['sentiment']==1)]))
 
 #runTweetsScraper()
-#extractLinesWithCurseWordsCSV()
-extractLinesWithEmojiesCSV()
 #findUniqueTweets()
 #countExamplesByCategory()
-#print(remove_hashtags("I #find it #funny hello #sarcasm #hello#hello"))
