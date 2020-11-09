@@ -1,12 +1,13 @@
 import json
 from pprint import pprint
 import csv
-from getTweets import remove_stopwords
 import pandas as pd
 import numpy as np
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-nltk.download('punkt')
+from textblob import TextBlob
+
+
 
 cursewordsCatg = {
 0: "general",
@@ -28,7 +29,7 @@ allCurseWords= [
   set(["tit","cum","hoe","chink","gay"]),
   set(["son of a bitch","doggie style","fucked up"])
 ]
-
+'''
 first_line = True
 for i in range(0,60):
     num = ''
@@ -62,11 +63,8 @@ for i in range(0,60):
                             break
                     if found:
                         break
-
-#data analysis and visualization with matplotlib and pandas
-df = pd.read_csv('local-analysis-tweets.csv')
-
-
+'''
+#functions to apply to pandas
 def sentiment_analysis(raw):
     tokens = nltk.word_tokenize(raw)
     text = nltk.Text(tokens)
@@ -74,6 +72,20 @@ def sentiment_analysis(raw):
     sid = SentimentIntensityAnalyzer()
     scores = sid.polarity_scores(raw)
     return scores
+
+def get_lang(text):
+    b = TextBlob(text)
+    return b.detect_language()
+
+#cleaning for csv using pandas
+df = pd.read_csv('local-analysis-tweets.csv')
+print(df.head())
+print(df.shape)
+df['lang']=df['text'].apply(get_lang)
+print(df.head())
+
+df_filtered = df[df['lang'] == 'eng'] 
+
 
 
 
