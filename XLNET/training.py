@@ -1,19 +1,7 @@
-import numpy as np # linear algebra
-import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-import numpy as np
-import pandas as pd
-import tensorflow as tf
-import seaborn as sns
-import transformers
-import keras
-import nltk
-import re
-import os
 
+import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, roc_auc_score, roc_curve
-from transformers import TFXLNetModel, XLNetTokenizer
 from sklearn.metrics import classification_report
 from preprocess import *
 from build_model import *
@@ -61,4 +49,11 @@ _, val_acc = model.evaluate(xlnet_val.x, xlnet_val.y)
 test['prediction'] = model.predict(xlnet_test.x).argmax(axis=-1)
 print(classification_report(test['sentiment'], test['prediction']))
 
-model.save('XLNET_TEST')
+### MODEL IS SAVED BUT IT GIVES EORRS WHEN LOADING MODEL WITH keras.models.load_model('XLNET_TEST')
+#model.save('XLNET_TEST')
+
+pred_df = pd.read_csv('local-analysis-tweets.csv')
+pred_df['sentiment']=0
+pred_data =XLNetData(pred_df, tokenizer=XLNetTokenizer.from_pretrained(XLNET_MODEL), max_len=50)
+pred_df['sentiment']= model.predict(pred_data.x).argmax(axis=-1)
+pred_df.to_csv('predictions.csv')
