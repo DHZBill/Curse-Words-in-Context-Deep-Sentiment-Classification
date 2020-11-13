@@ -5,8 +5,7 @@ import pandas as pd
 import numpy as np
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from textblob import TextBlob
-
+from langdetect import detect
 
 
 cursewordsCatg = {
@@ -29,9 +28,12 @@ allCurseWords= [
   set(["tit","cum","hoe","chink","gay"]),
   set(["son of a bitch","doggie style","fucked up"])
 ]
-'''
+
+def isEnglish(s):
+    return detect(s)
+
 first_line = True
-for i in range(0,60):
+for i in range(30,31):
     num = ''
     if i < 10:
         num = '0' + str(i)
@@ -52,7 +54,7 @@ for i in range(0,60):
                 found = False
                 for cursewordCatg, s in enumerate(allCurseWords):
                     for w in s:
-                        if w in text:
+                        if w in text and isEnglish(w):
                             # created_at entry format: 'Wed Sep 28 02:35:11 +0000 2011'
                             date = data['created_at']
                             date = date.split(' ')
@@ -63,7 +65,7 @@ for i in range(0,60):
                             break
                     if found:
                         break
-'''
+
 #functions to apply to pandas
 def sentiment_analysis(raw):
     tokens = nltk.word_tokenize(raw)
@@ -72,12 +74,13 @@ def sentiment_analysis(raw):
     sid = SentimentIntensityAnalyzer()
     scores = sid.polarity_scores(raw)
     return scores
-
+'''
 def get_lang(text):
     b = TextBlob(text)
     return b.detect_language()
-
+'''
 #cleaning for csv using pandas
+'''
 df = pd.read_csv('local-analysis-tweets.csv')
 print(df.head())
 print(df.shape)
@@ -85,7 +88,7 @@ df['lang']=df['text'].apply(get_lang)
 print(df.head())
 
 df_filtered = df[df['lang'] == 'eng'] 
-
+'''
 
 
 
