@@ -1,13 +1,14 @@
 import numpy as np
 from sklearn.utils import class_weight
-
+from transformers import XLNetTokenizer
+from build_model import XLNET_MODEL
 class XLNetData:
     DATA_COLUMN = 'text'
     LABEL_COLUMN = 'sentiment'
-
-    def __init__(self, data, tokenizer, max_len):
+    TOKENIZER = XLNetTokenizer.from_pretrained(XLNET_MODEL)
+    def __init__(self, data, max_len):
         self.data = data
-        self.tokenizer = tokenizer
+        self.tokenizer = XLNetData.TOKENIZER
         self.sequence_len = max_len
         self.num_classes = data[XLNetData.LABEL_COLUMN].nunique()
         self.x = self._get_inputs()['inp_tok']
