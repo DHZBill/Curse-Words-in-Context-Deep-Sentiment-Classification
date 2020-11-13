@@ -105,3 +105,48 @@ def remove_userids(text):
         res+= " USERID "
    
     return res
+
+
+def findUniqueTweets(infile, outfile):
+    twitter = pd.read_csv(infile)
+    print("all: ", twitter.shape)
+    #twitter = twitter[twitter["curseword"] != "a**"]
+    twitter.drop_duplicates(subset=["text"], inplace=True)
+    print("after dropping duplicates: ", twitter.shape)
+
+    # step 0: convert everything to lower case, remove stop words
+    twitter["text"] = twitter["text"].apply(lambda x: to_lower(x))
+    twitter["text"] = twitter["text"].apply(lambda x: remove_stopwords(x))
+
+    # step 1: replace @USERID with USERID
+    twitter["text"] = twitter["text"].apply(lambda x: remove_userids(x))
+    # step 2: replace links with URL
+    twitter["text"] = twitter["text"].apply(lambda x: remove_URL(x))
+    twitter["text"] = twitter["text"].apply(lambda x: remove_html(x))
+    # step 3: replace "happyyyyy" with happy, ":))))" with ":)"
+    twitter["text"] = twitter["text"].apply(lambda x: remove_repeatCharacters(x))
+    # step 4: remove tweets containing 0, or more than one sentiment labels eg. #happy and #sad,  :) and :(, #happy and :(
+    twitter = twitter[twitter["text"].apply(keepNonAmbigousTweets) == True]
+    print("after dropping ambigious tweets: ", twitter.shape)
+
+    # step 5: remove hashtags from the end of the text
+    twitter["text"] = twitter["text"].apply(lambda x: remove_hashtags(x))
+
+    # step 6: remove tweets that don't contain curseword
+    twitter = twitter[twitter["text"].apply(tweetContainsCurseWord) == True]
+    print("after dropping tweets without cursewords: ", twitter.shape)
+
+    # step 7: remove emojis, punctuation
+    twitter["text"] = twitter["text"].apply(lambda x: remove_emoji(x))
+    twitter["text"] = twitter["text"].apply(lambda x: remove_punct(x))
+
+    # step 8: remove tweets that are less than 6 words long
+    twitter = twitter[twitter["text"].apply(tweetIsNotTooShort) == True]
+    print("after dropping short tweets: ", twitter.shape)
+
+    twitter2 = twitter.sort_values(["text"])
+    twitter2.drop_duplicates(subset=["text"], inplace=True)
+    print("after dropping duplicates: ", twitter2.shape)
+
+    twitter2.to_csv(outfile, index=False)
+    print("unique: ", twitter2.shape)

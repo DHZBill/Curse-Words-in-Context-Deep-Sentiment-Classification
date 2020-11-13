@@ -26,7 +26,7 @@ cursewordsCatg = {
 
 allCurseWords = [
     set(["fuck", "fu*k", "f*ck", "f**k", "sh*t", "shit", "pissed", "screw"]),
-    set(["nigger", "n*gger", "n*gg*r", "chink", "niglet", "wetback"]),
+    set(["nigger", "n*gga", "n*gger", "n*gg*r", "chink", "niglet", "wetback"]),
     set(
         [
             "dick",
