@@ -1,18 +1,5 @@
 sentiments = {0: "positive", 1: "sad", 2: "angry", 3: "fear", 4: "sarcasm"}
 
-sentimentMap = {
-    "enthusiasm": 0,
-    "happiness": 0,
-    "love": 0,
-    "worry": 3,
-    "hate": 2,
-    "fun": 0,
-    "relief": 0,
-    "surprise": 3,
-    "sadness": 1,
-    "empty": 1,
-}
-
 cursewordsCatg = {
     0: "general",
     1: "race",
@@ -45,7 +32,7 @@ allCurseWords = [
             "dyke",
             "pimp",
             "whore",
-            "hoe",
+            " hoe ",
             "bitch",
             "b*tch",
             "bi*ch",
@@ -56,8 +43,8 @@ allCurseWords = [
             "spunk",
             "skank",
             "motherfucker",
-            "tit",
-            "gay",
+            " tit ",
+            " gay ",
             "mothafucker",
             "blowjob",
         ]
@@ -65,7 +52,7 @@ allCurseWords = [
     set(["hell", "damn"]),
     set([" ass ", "queaf", "shart", "urine", "rimming", "arse", "shat ", "crap "]),
     set(["retard", "spaz"]),
-    set([" tit ", "hoe", "chink", "gay "]),
+    set([" tit ", " hoe ", "chink", "gay "]),
     set(["son of a bitch", "doggie style", "fucked up"]),
 ]
 
