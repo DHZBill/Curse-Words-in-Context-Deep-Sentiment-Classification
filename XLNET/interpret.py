@@ -1,14 +1,15 @@
-import csv
-import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
+import pandas as pd
+import os
 
-def countExamplesByCategory(filename):
+def count_examples_by_category(filename):
     df = pd.read_csv(filename)
     print("sentiment 0", len(df[(df["sentiment"] == 0)]))
     print("sentiment 1", len(df[(df["sentiment"] == 1)]))
     print("sentiment 2", len(df[(df["sentiment"] == 2)]))
 
-countExamplesByCategory("/Users/wenxindong/Desktop/CurseWordsInContext/XLNET/2011-10-06_predicted.csv")
+dir_path = os.path.dirname(os.path.realpath(__file__))
+dir_analysis_data = os.path.join(dir_path, 'analysis_data/labeled')
 
-countExamplesByCategory("/Users/wenxindong/Desktop/CurseWordsInContext/2011-10-06_predicted_wenxin.csv")
-
-countExamplesByCategory("/Users/wenxindong/Desktop/CurseWordsInContext/2011-10-06_predicted_wenxin_2.csv")
+for file in os.listdir(dir_analysis_data):
+    filename = os.path.splitext(file)[0]
+    count_examples_by_category('analysis_data/labeled/' + file)
