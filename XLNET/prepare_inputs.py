@@ -4,9 +4,12 @@ from transformers import XLNetTokenizer
 from build_model import XLNET_MODEL
 
 class XLNetData:
+    """ Prepare input tokens for the model from texts
+        """
     DATA_COLUMN = 'text'
     LABEL_COLUMN = 'sentiment'
     TOKENIZER = XLNetTokenizer.from_pretrained(XLNET_MODEL)
+
     def __init__(self, data, max_len):
         self.data = data
         self.tokenizer = XLNetData.TOKENIZER

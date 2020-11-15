@@ -32,7 +32,7 @@ def xlnet_model(num_classes, max_seq_len, mname = XLNET_MODEL):
 
     # Early stopping on validation accuracy
     callbacks = [
-        keras.callbacks.EarlyStopping(monitor='val_acc', patience=5, min_delta=0.01, restore_best_weights=True),
+        keras.callbacks.EarlyStopping(monitor='val_acc', patience=4, min_delta=0.01, restore_best_weights=True),
         keras.callbacks.ReduceLROnPlateau(monitor='val_acc', factor=1e-6, patience=2, verbose=0, mode='auto',
                                           min_delta=0.001, cooldown=0, min_lr=1e-6)
     ]

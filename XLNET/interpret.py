@@ -1,10 +1,4 @@
-import pandas as pd
-import os
-import csv
-import matplotlib.pyplot as plt
-from hashtag_config import *  
 from plots import *
-import matplotlib.patches as mpatches
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 dir_analysis_data = os.path.join(dir_path, 'analysis_data/labeled')
