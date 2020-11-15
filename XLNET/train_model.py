@@ -1,10 +1,10 @@
 import pandas as pd
 from matplotlib import pyplot as plt
+import seaborn as sns
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 from prepare_inputs import *
 from build_model import *
-
 plt.style.use('seaborn')
 
 PATH_CSV_TRAIN = "unique_tweets.csv"
@@ -16,8 +16,8 @@ def preprocess(df):
     data.loc[data['sentiment'] == 2, 'sentiment'] = 1
     data.loc[data['sentiment'] == 3, 'sentiment'] = 1
     data.loc[data['sentiment'] == 4, 'sentiment'] = 2
-    #data = data.drop(data.query('sentiment == 0').sample(frac=0.3, random_state=42).index)
-    #data = data.drop(data.query('sentiment == 2').sample(frac=0.3, random_state=42).index)
+    data = data.drop(data.query('sentiment == 0').sample(frac=0.25, random_state=42).index)
+    data = data.drop(data.query('sentiment == 2').sample(frac=0.25, random_state=42).index)
     data = data.append(data[data['sentiment']==1])
     print(data['sentiment'].value_counts())
     return data
@@ -47,5 +47,18 @@ _, val_acc = model.evaluate(xlnet_val.x, xlnet_val.y)
 
 test['prediction'] = model.predict(xlnet_test.x).argmax(axis=-1)
 print(classification_report(test['sentiment'], test['prediction']))
+report = classification_report(test['sentiment'], test['prediction'], output_dict=True)
+report_df = pd.DataFrame(report).transpose()
+report_df.to_csv('evaluation/classification_report.csv')
+
+cm =confusion_matrix(test['sentiment'], test['prediction'])
+index = ['Empowered','Upset','Sarcastic']
+columns = ['Empowered','Upset','Sarcastic']
+cm_df = pd.DataFrame(cm,columns,index)
+plt.figure(figsize=(10,6))
+cm_plot = sns.heatmap(cm_df, annot=True)
+plt.tight_layout()
+plt.savefig('evaluation/confusion_matrix.png')
+plt.close()
 
 model.save_weights('trained_model/model_weights')

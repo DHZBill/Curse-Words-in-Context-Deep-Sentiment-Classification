@@ -28,11 +28,11 @@ def xlnet_model(num_classes, max_seq_len, mname = XLNET_MODEL):
 
     # Compile model
     model = tf.keras.Model(inputs=[word_inputs], outputs=[outputs])
-    model.compile(optimizer=tf.keras.optimizers.Adam(lr=5e-6), loss=keras.losses.SparseCategoricalCrossentropy(), metrics=[keras.metrics.SparseCategoricalAccuracy(name="acc")])
+    model.compile(optimizer=tf.keras.optimizers.Adam(lr=4e-6), loss=keras.losses.SparseCategoricalCrossentropy(), metrics=[keras.metrics.SparseCategoricalAccuracy(name="acc")])
 
     # Early stopping on validation accuracy
     callbacks = [
-        keras.callbacks.EarlyStopping(monitor='val_acc', patience=4, min_delta=0.01, restore_best_weights=True),
+        keras.callbacks.EarlyStopping(monitor='val_acc', patience=5, min_delta=0.01, restore_best_weights=True),
         keras.callbacks.ReduceLROnPlateau(monitor='val_acc', factor=1e-6, patience=2, verbose=0, mode='auto',
                                           min_delta=0.001, cooldown=0, min_lr=1e-6)
     ]
