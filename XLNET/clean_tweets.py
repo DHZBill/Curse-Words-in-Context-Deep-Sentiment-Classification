@@ -59,7 +59,7 @@ def tweetContainsCurseWord(text):
   for word in text:
     for i in range(len(allCurseWords)):
       for curseword in allCurseWords[i]:
-        if(curseword in word):
+        if(curseword == word):
           return True
   return False
           
