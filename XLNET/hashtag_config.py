@@ -25,7 +25,7 @@ cursewordsCatg = {
 }
 
 allCurseWords = [
-    set(["fuck", "fu*k", "f*ck", "f**k", "sh*t", "shit", "pissed", "screw"]),
+    set(["fuck", "fucking", "fu*k", "f*ck", "f**k", "sh*t", "shit", "shitty", "pissed", "screw"]),
     set(["nigger", "n*gga", "n*gger", "n*gg*r", "chink", "niglet", "wetback"]),
     set(
         [
@@ -47,6 +47,7 @@ allCurseWords = [
             "whore",
             "hoe",
             "bitch",
+            "bitchy",
             "b*tch",
             "bi*ch",
             "cock",
@@ -62,10 +63,10 @@ allCurseWords = [
             "blowjob",
         ]
     ),
-    set(["hell", "damn"]),
-    set([" ass ", "queaf", "shart", "urine", "rimming", "arse", "shat ", "crap "]),
+    set(["hell", "damn", "damned"]),
+    set(["ass", "queaf", "shart", "urine", "rimming", "arse", "shat", "crap"]),
     set(["retard", "spaz"]),
-    set([" tit ", "hoe", "chink", "gay "]),
+    set(["tit", "hoe", "chink", "gay"]),
     set(["son of a bitch", "doggie style", "fucked up"]),
 ]
 
