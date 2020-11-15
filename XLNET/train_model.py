@@ -61,4 +61,13 @@ plt.tight_layout()
 plt.savefig('evaluation/confusion_matrix.png')
 plt.close()
 
+plt.plot(hist.history['acc'])
+plt.plot(hist.history['val_acc'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'val'], loc='upper left')
+plt.tight_layout()
+plt.savefig('evaluation/learning_curve.png')
+
 model.save_weights('trained_model/model_weights')
