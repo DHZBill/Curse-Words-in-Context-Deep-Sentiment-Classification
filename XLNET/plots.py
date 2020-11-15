@@ -147,6 +147,21 @@ def multilineSentiment():
     ax.plot(x, sarcastic, label='Sarcastic')
     ax.legend()
     plt.show()
-    
-multilineSentiment()
-multilineCurseword()
+
+def plotSentimentBar():
+    x = ['Positive', 'Negative', 'Sarcastic']
+    counts = [2701, 1013, 2720]
+    x_pos = [i for i, _ in enumerate(x)]
+
+    plt.bar(x_pos, counts, color = ['green', 'orange','blue'])
+    plt.xlabel("Sentiment Label")
+    plt.ylabel("Count")
+    plt.title("Training Set Sentiment Class Distribution")
+
+    plt.xticks(x_pos, x)
+
+    plt.show()
+
+# multilineSentiment()
+# multilineCurseword()
+plotSentimentBar()
