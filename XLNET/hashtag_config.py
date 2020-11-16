@@ -13,62 +13,85 @@ sentimentMap = {
     "empty": 1,
 }
 
-cursewordsCatg = {
-    0: "general",
-    1: "race",
-    2: "gender-sexuality",
-    3: "religion",
-    4: "other-body-parts",
-    5: "ableist",
-    6: "problem-words",
-    7: "multiple-worded",
-}
 
-allCurseWords = [
-    set(["fuck", "fucking", "fu*k", "f*ck", "f**k", "sh*t", "shit", "shitty", "pissed", "screw"]),
-    set(["nigger", "n*gga", "n*gger", "n*gg*r", "chink", "niglet", "wetback"]),
-    set(
-        [
-            "dick",
-            "di*k",
-            "d*ck",
-            "cunt",
-            "pussy",
-            "pu**y",
-            "fag ",
-            "queer",
-            "qu**r",
-            "boner",
-            "dong",
-            "slut",
-            "sl*t",
-            "dyke",
-            "pimp",
-            "whore",
-            "hoe",
-            "bitch",
-            "bitchy",
-            "b*tch",
-            "bi*ch",
-            "cock",
-            "tramp",
-            "cum ",
-            "schlong",
-            "spunk",
-            "skank",
-            "motherfucker",
-            "tit",
-            "gay",
-            "mothafucker",
-            "blowjob",
-        ]
-    ),
-    set(["hell", "damn", "damned"]),
-    set(["ass", "queaf", "shart", "urine", "rimming", "arse", "shat", "crap"]),
-    set(["retard", "spaz"]),
-    set(["tit", "hoe", "chink", "gay"]),
-    set(["son of a bitch", "doggie style", "fucked up"]),
+cursewordsCatg = {
+7: "general",
+0: "race",
+1: "gender-sexuality",
+2:"religion",
+3: "other-body-parts",
+4: "ableist",
+5: "problem-words",
+6:"multiple-worded"}
+
+allCurseWords= [
+  set(["nigger","n*gger", "n*gg*r", "chink","niglet", "wetback"]),
+  set(["dick","di*k", "d*ck", "cunt","pussy","pu**y","fag","queer","qu**r", "boner","dong","slut","sl*t","dyke","pimp","whore","hoe","bitch","b*tch", "bi*ch","cock","tramp","cum","schlong","spunk","skank","motherfucker","tit","gay","mothafucker","screw","blowjob"]),
+  set(["hell","damn"]),
+  set(["ass", "queaf","shart","urine","rimming","arse","shat","crap"]),
+  set(["retard","spaz"]),
+  set(["tit","cum","hoe","chink","gay"]),
+  set(["son of a bitch","doggie style","fucked up"]),
+  set(["fuck","fu*k", "f*ck", "f**k", "sh*t","shit","pissed","screw"]) 
 ]
+
+
+# cursewordsCatg = {
+#     0: "general",
+#     1: "race",
+#     2: "gender-sexuality",
+#     3: "religion",
+#     4: "other-body-parts",
+#     5: "ableist",
+#     6: "problem-words",
+#     7: "multiple-worded",
+# }
+
+# allCurseWords = [
+#     set(["fuck", "fucking", "fu*k", "f*ck", "f**k", "sh*t", "shit", "shitty", "pissed", "screw"]),
+#     set(["nigger", "n*gga", "n*gger", "n*gg*r", "chink", "niglet", "wetback"]),
+#     set(
+#         [
+#             "dick",
+#             "di*k",
+#             "d*ck",
+#             "cunt",
+#             "pussy",
+#             "pu**y",
+#             "fag",
+#             "queer",
+#             "qu**r",
+#             "boner",
+#             "dong",
+#             "slut",
+#             "sl*t",
+#             "dyke",
+#             "pimp",
+#             "whore",
+#             "hoe",
+#             "bitch",
+#             "bitchy",
+#             "b*tch",
+#             "bi*ch",
+#             "cock",
+#             "tramp",
+#             "cum",
+#             "schlong",
+#             "spunk",
+#             "skank",
+#             "motherfucker",
+#             "tit",
+#             "gay",
+#             "mothafucker",
+#             "blowjob",
+#         ]
+#     ),
+#     set(["hell", "damn", "damned"]),
+#     set(["ass", "queaf", "shart", "urine", "rimming", "arse", "shat", "crap"]),
+#     set(["retard", "spaz"]),
+#     set(["tit", "hoe", "chink", "gay"]),
+#     set(["son of a bitch", "doggie style", "fucked up"]),
+# ]
 
 allHashtags = [
     set(
