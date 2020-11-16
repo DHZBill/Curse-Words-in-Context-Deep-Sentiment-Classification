@@ -15,14 +15,14 @@ sentimentMap = {
 
 
 cursewordsCatg = {
-7: "general",
-0: "race",
-1: "gender-sexuality",
-2:"religion",
-3: "other-body-parts",
-4: "ableist",
-5: "problem-words",
-6:"multiple-worded"}
+7: "General",
+0: "Race",
+1: "Gender-Sexuality",
+2: "Religion",
+3: "Non-Sexual Body Parts",
+4: "Ableist",
+5: "Problem Words",
+6: "Multiple Worded"}
 
 allCurseWords= [
   set(["nigger","n*gger", "n*gg*r", "chink","niglet", "wetback"]),
