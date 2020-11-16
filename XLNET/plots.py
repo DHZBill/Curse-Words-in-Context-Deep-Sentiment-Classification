@@ -162,8 +162,32 @@ def plotSentimentBar():
     plt.xticks(x_pos, x)
     plt.savefig("XLNET/plots/sent_bar.png")
     # plt.show()
+def plotCategoryBar():
+    count = []
+    labels = []
+    for i in range(len(cursewordsCatg)):
+        ave = 0
+        for year in cursewordByYear:
+            ave+= year[i]
+        ave /= len(cursewordByYear)
+        count.append([ave, cursewordsCatg[i]])
+    # count.sort(key=lambda x: x[0])
+    for i in range(len(cursewordsCatg)):
+        labels.append(count[i][1])
+        count[i] = count[i][0]
+
+    colors = ["red", "lightblue", "salmon", "orange", "green", "gray", "pink", "purple"]
+    fig1, ax1 = plt.subplots()
+    ax1.pie(count, labels=labels,
+             startangle=90, radius=1.2, colors = colors)
+
+    plt.title("Average Curse Words Class Distribution 2011-2019", y=1.08)
+    plt.savefig("XLNET/plots/catg_pie.png")
+
+    #plt.show()
 
 # multilineSentiment()
 # multilineCurseword()
 # plotSentimentBar()
-multilineSentimentByCategory()
+#multilineSentimentByCategory()
+plotCategoryBar()
