@@ -10,8 +10,8 @@ This repository contains:
 - Training data for our NLP model
 - Sampled Historical Tweets from 2011- 2019
 - Preprocessing Python scripts for the raw tweets
-- A Bert Model (abandoned due to low performance)
-- A XLNET Model 
+- Implementation of Bert Model (abandoned due to low performance)
+- Implementation of XLNET Model 
 - Scripts to build and training the models
 - Script to predict using the models
 - Scripts for plotting trends in prediction data.
@@ -19,7 +19,7 @@ This repository contains:
 # Getting Started
 
 ## XLNET
-This directory contains all files needed to train the XLNet model and perform data analysis on the historical tweet data. 
+This directory contains files needed to train the XLNet model and perform data analysis on the historical tweet data. 
 - Run *train_model.py* to train the XLNet model on *unique_tweets.csv*. Model weights are saved, and visualizations of model outputs are created.
 - Run *predict_sentiment.py* to use the saved model weights to predict emotions on the historical tweet data.
 - Run *interpret.py* to calculate data needed for plotting the graphs. 
