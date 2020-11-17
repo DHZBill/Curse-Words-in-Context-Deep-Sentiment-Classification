@@ -7,14 +7,14 @@ In this emotional analysis of  tweets containing curse words, we analyze the cha
 
 # Contents
 This repository contains: 
-Training data for our NLP model
-Sampled Historical Tweets from 2011- 2019
-Preprocessing Python scripts for the raw tweets
-A Bert Model (abandoned due to low performance)
-A XLNET Model 
-Scripts to build and training the models
-Script to predict using the models
-Scripts for plotting trends in prediction data.
+- Training data for our NLP model
+- Sampled Historical Tweets from 2011- 2019
+- Preprocessing Python scripts for the raw tweets
+- A Bert Model (abandoned due to low performance)
+- A XLNET Model 
+- Scripts to build and training the models
+- Script to predict using the models
+- Scripts for plotting trends in prediction data.
 
 # Getting Started
 
