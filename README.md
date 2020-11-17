@@ -20,7 +20,7 @@ Scripts for plotting trends in prediction data.
 ## XLNET
 This directory contains all files needed to train the XLNet model and perform data analysis on the historical tweet data. 
 - Run *train_model.py* to train the XLNet model on *unique_tweets.csv*. Model weights are saved, and visualizations of model outputs are created.
-- Run *predict.py* to use the saved model weights to predict emotions on the historical tweet data.
+- Run *predict_sentiment.py* to use the saved model weights to predict emotions on the historical tweet data.
 - Run *interpret.py* to calculate data needed for plotting the graphs. 
 - Run *plots.py* plot multi-line, bar, and pie charts that are useful for data-analysis. Plots auto-saved in */plots*. 
 
