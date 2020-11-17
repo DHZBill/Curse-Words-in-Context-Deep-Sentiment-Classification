@@ -2,6 +2,8 @@ from clean_tweets import tweetContainsCurseWord
 import pandas as pd
 import os
 
+#Further clean tweets in FILENAME without curseword 
+
 def drop_tweets_without_curseword(filename):
 
     pred_df = pd.read_csv('XLNET/analysis_data/labeled/' + filename, skipinitialspace=True, usecols=['text', 'sentiment'])

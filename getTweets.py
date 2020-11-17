@@ -112,14 +112,20 @@ def findUniqueTweets():
 
 def countExamplesByCategory(filename):
     df = pd.read_csv(filename)
-    print("positive", len(df[(df["sentiment"] == 0)]))
-    print("angry", len(df[(df["sentiment"] == 2)]))
-    print("fear", len(df[(df["sentiment"] == 3)]))
-    print("sarcasm", len(df[(df["sentiment"] == 4)]))
-    print("sad", len(df[(df["sentiment"] == 1)]))
+    
+    zero = len(df[(df["sentiment"] == 0)])
+    one = len(df[(df["sentiment"] == 2)])+len(df[(df["sentiment"] == 3)]) + len(df[(df["sentiment"] == 1)])
+    two = len(df[(df["sentiment"] == 4)])
+    total = 1
+    # print("positive - 0", len(df[(df["sentiment"] == 0)]))
+    # print("angry - 1", len(df[(df["sentiment"] == 2)]))
+    # print("fear - 1 ", len(df[(df["sentiment"] == 3)]))
+    # print("sarcasm- 2", len(df[(df["sentiment"] == 4)]))
+    # print("sad - 1", len(df[(df["sentiment"] == 1)]))
+    print({0:zero/total, 1:one/total, 2:two/total})
 
 
 #run the following three lines to get more tweets, and clean them
-runTweetsScraper()
-findUniqueTweets()
-countExamplesByCategory("training_data/unique_tweets.csv")
+# runTweetsScraper()
+# findUniqueTweets()
+countExamplesByCategory("XLNET/unique_tweets.csv")

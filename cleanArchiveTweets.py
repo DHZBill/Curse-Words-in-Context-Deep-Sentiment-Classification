@@ -9,11 +9,14 @@ import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 from hashtagConfig import *
 from cleanTweets import *
 
-YEAR = "2015"
-MONTH = "03"
+# Clean Archived Tweets by looping through json files under directory, 
+# filtering for tweets containing cursewords, and saving to csv file
+
+YEAR = "2013"
+MONTH = "04"
 DAY = "15"
-JSON_ROOT = "/Users/wenxindong/Downloads/2015S/**/*.json"
-CSV_ROOT = "data_analysis/" + YEAR + "_" + MONTH + "_" + DAY + ".csv"
+JSON_ROOT = "/Users/wenxindong/Downloads/2013S/**/*.json"
+CSV_ROOT = "/Users/wenxindong/Desktop/CurseWordsInContext/XLNET/analysis_data/source/" + YEAR + "_" + MONTH + "_" + DAY + "_again.csv"
 
 def json_to_csv(infile, writer):
     items = []
@@ -57,9 +60,7 @@ def cleanArchiveTweets(infile, outfile):
     # step 3: replace "happyyyyy" with happy, ":))))" with ":)"
     twitter["text"] = twitter["text"].apply(lambda x: remove_repeatCharacters(x))
     # step 4: remove tweets containing 0, or more than one sentiment labels eg. #happy and #sad,  :) and :(, #happy and :(
-    # twitter = twitter[twitter["text"].apply(keepNonAmbigousTweets) == True]
-    # print("after dropping ambigious tweets: ", twitter.shape)
-
+        
     # step 5: remove hashtags from the end of the text
     twitter["text"] = twitter["text"].apply(lambda x: remove_hashtags(x))
 
