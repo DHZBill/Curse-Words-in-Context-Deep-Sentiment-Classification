@@ -1,5 +1,6 @@
 # Detecting the Emotion Dynamics of Profanity Language In Social Media Through Time 
-Repository for FA20 CS230 Final Project by Haozheng Du, Wenxin Dong, Kezia Lopez
+Repository for FA20 CS230 Final Project
+*Authors: Haozheng Du, Wenxin Dong, Kezia Lopez*
 
 # Overview
 In this emotional analysis of  tweets containing curse words, we analyze the changes of emotional context of profanity through time. First, we build a multi-class emotion classifier using XLNET to classify sentiments of curse-word-contexts, and then use this trained  XLNET model to predict emotional context of archived tweets from 2011 to 2019. 
