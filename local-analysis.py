@@ -33,7 +33,7 @@ def isEnglish(s):
     return detect(s)
 
 first_line = True
-for i in range(30,31):
+for i in range(0,60):
     num = ''
     if i < 10:
         num = '0' + str(i)
@@ -74,11 +74,7 @@ def sentiment_analysis(raw):
     sid = SentimentIntensityAnalyzer()
     scores = sid.polarity_scores(raw)
     return scores
-'''
-def get_lang(text):
-    b = TextBlob(text)
-    return b.detect_language()
-'''
+
 #cleaning for csv using pandas
 '''
 df = pd.read_csv('local-analysis-tweets.csv')
@@ -88,14 +84,4 @@ df['lang']=df['text'].apply(get_lang)
 print(df.head())
 
 df_filtered = df[df['lang'] == 'eng'] 
-'''
-
-
-
-
-'''
-trouble words to check on:
-hello, 'ass'
-ignore other languages
-ignore repititions (just in case)
 '''
