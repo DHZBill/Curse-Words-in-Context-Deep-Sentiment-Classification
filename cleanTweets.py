@@ -5,7 +5,7 @@ import string
 import urllib
 import re
 import pandas as pd  
-from hashtagConfig import *  
+from hashtag_config import *  
 
 stopwords = set(["RT"])
 
@@ -64,7 +64,6 @@ def keepNonAmbigousTweets(text):
   wordSentiment = -1
   text = text.split(' ')
   for word in text:
-    #print(word)
     #word could be #hashtag, :), or hello
     for i in range(len(allEmojis)):
       if( word in allEmojis[i]):

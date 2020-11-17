@@ -14,10 +14,6 @@ def extractLinesWithCurseWordsTXT(filename, sentiment = -1, hashtag = ""):
           line = line[1]
           for j in range(len(allCurseWords)):
             if any(x in line for x in allCurseWords[j]):
-              #line = line.split('\t')
-              #print(line)
-              #if(float(line[3].strip())>0.65):
-                #print("Line{}: {}".format(count, line), word, sentiment)
                 writer.writerow([line, sentiment, word, "UNDEFINED", "UNDEFINED"])
                 count +=1
               
@@ -32,18 +28,13 @@ def extractLinesWithEmojiesCSV():
           comment = line[1]["content"]
           for j in range(len(allCurseWords)):
             if any(x in comment for x in allCurseWords[j]) :
-              # for k in range(len(allEmojis)):
-              #   if any(x in comment for x in allEmojis[k]):
               if(line[1]["sentiment"] in sentimentMap):
 
                 sentimentLabel = sentimentMap[line[1]["sentiment"]]                
-                print(line[1]["sentiment"],sentimentLabel,  "Line{}: {}".format(count, comment))
-
-                #writer.writerow([comment, sentimentLabel, "UNDEFINED", "UNDEFINED", "UNDEFINED"])
+                writer.writerow([comment, sentimentLabel, "UNDEFINED", "UNDEFINED", "UNDEFINED"])
                 count +=1
         except Exception as e: 
           pass
-          #print("ignore this idea")
 
 def extractLinesWithCurseWordsCSV():
   with open('testset.csv', 'w', newline='') as file:
@@ -55,7 +46,6 @@ def extractLinesWithCurseWordsCSV():
         try:
           if(count>5300):
             continue
-          #print(line[6])
           comment = line.comment
           if(line.label!=1):
             continue
@@ -69,4 +59,4 @@ def extractLinesWithCurseWordsCSV():
                 writer.writerow([comment, 4, "UNDEFINED", "UNDEFINED", j])
               
         except Exception as e: 
-          print("ignore this idea") 
+          pass

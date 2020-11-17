@@ -5,12 +5,11 @@ import string
 import urllib
 import re
 import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
-from hashtagConfig import *  
+from hashtag_config import *  
 from cleanTweets import *
 
 # bearer tokens to access Tweets through API
-kez_bearer = "AAAAAAAAAAAAAAAAAAAAAChUGwEAAAAA7ump2ucNmOaE89xv70KhDZqL1qQ%3DVPQSNjNv7BIlk6sO2a0FfU7Rqu75nqFBv08t4KnYk6kavtx2KT"
-wen_bearer = "AAAAAAAAAAAAAAAAAAAAADAzIgEAAAAAJPxcIOtIqGIiZ5ARrz59FVuD4GA%3DeDvmoV2QIWj7XqvxDHqQJqDUsYzJT8yTcW80t4ZfWStPCYAJTT"
+bearer = "your_twitter_api_key"
 
 kLimitPerCurseWord = 10000
 kCountPerRequest = 100
@@ -46,7 +45,7 @@ def runTweetsScraper():
                     for curseword in cursewordSet:
                         try:
                             getTweets(
-                                wen_bearer,
+                                bearer,
                                 "?q=%23"
                                 + hashtag
                                 + "%20"
@@ -59,7 +58,6 @@ def runTweetsScraper():
                                 sentiment,
                                 cursewordCatg,
                             )
-                            # getTweets(kez_bearer, "?q=%23" + hashtag_urlencoded + "%20" + curseword_urlencoded +"&lang=en&tweet_mode=extended&count="+str(kCountPerRequest), curseword, hashtag, writer, sentiment, cursewordCatg)
                         except Exception as e:
                             print("An exception occurred at", hashtag, curseword)
                             print(e)
@@ -110,22 +108,6 @@ def findUniqueTweets():
     print("unique: ", twitter2.shape)
 
 
-def countExamplesByCategory(filename):
-    df = pd.read_csv(filename)
-    
-    zero = len(df[(df["sentiment"] == 0)])
-    one = len(df[(df["sentiment"] == 2)])+len(df[(df["sentiment"] == 3)]) + len(df[(df["sentiment"] == 1)])
-    two = len(df[(df["sentiment"] == 4)])
-    total = 1
-    # print("positive - 0", len(df[(df["sentiment"] == 0)]))
-    # print("angry - 1", len(df[(df["sentiment"] == 2)]))
-    # print("fear - 1 ", len(df[(df["sentiment"] == 3)]))
-    # print("sarcasm- 2", len(df[(df["sentiment"] == 4)]))
-    # print("sad - 1", len(df[(df["sentiment"] == 1)]))
-    print({0:zero/total, 1:one/total, 2:two/total})
-
-
 #run the following three lines to get more tweets, and clean them
 # runTweetsScraper()
 # findUniqueTweets()
-countExamplesByCategory("XLNET/unique_tweets.csv")

@@ -5,7 +5,7 @@ import string
 import urllib
 import re
 import pandas as pd  
-from hashtag_config import *
+from "../hashtag_config" import *
 
 stopwords = set(["RT"])
 
