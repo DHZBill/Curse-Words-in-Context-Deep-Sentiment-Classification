@@ -1,12 +1,14 @@
 import json
 
-#number sentiments:
 '''
+Sentiment numbers:
 2 --> upset
 0 --> encouraging
 3 --> upset
 1 --> upset
 4 --> sarcastic
+
+Comparison.py seeks to analyze the results of sentiment given by the AWS Comprehend service.
 '''
 
 #variables
@@ -55,7 +57,7 @@ with open('unique-tweets-test.json') as json_file:
     print("Wrong encouraging breakdown: ", wrong_encouraging)
     print("Wrong upset tweet total: ", wrong_upset_total)
     print("Wrong upset breakdown: ", wrong_upset)
-    #print("Sarcastic breakdown: ", sarcastic)
+    #comprint("Sarcastic breakdown: ", sarcastic)
     print("Sarcastic total breakdown", sarcastic_totals)
     print("overall ratio tweets classified incorrectly: ", (wrong_encouraging_total+wrong_upset_total)/total_tweets)
     print("ratio encouraging tweets classified incorrectly", wrong_encouraging_total/count_en)
