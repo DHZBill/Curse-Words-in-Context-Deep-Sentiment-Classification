@@ -19,13 +19,13 @@ Scripts for plotting trends in prediction data.
 
 ## XLNET
 This directory contains all files needed to train the XLNet model and perform data analysis on the historical tweet data. 
-- Run *train_model.py* to train the XLNet model on unique_tweets.csv. Model weights are saved, and visualizations of model outputs are created.
+- Run *train_model.py* to train the XLNet model on *unique_tweets.csv*. Model weights are saved, and visualizations of model outputs are created.
 - Run *predict.py* to use the saved model weights to predict emotions on the historical tweet data.
 - Run *interpret.py* to calculate data needed for plotting the graphs. 
 - Run *plots.py* plot multi-line, bar, and pie charts that are useful for data-analysis. Plots auto-saved in */plots*. 
 
 ## lambda_results_analysis:
-This directory contains a copy of the lambda function used for the AWS Comprehend Sentiment Analyzer as *lambda-function-copy.py*, the resulting predictions of sentiment by the AWS Comprehend model for the training set contained by *unique-tweets-test.json*, and the accuracy and results analysis portion in comparison.py.
+This directory contains a copy of the lambda function used for the AWS Comprehend Sentiment Analyzer as *lambda-function-copy.py*, the resulting predictions of sentiment by the AWS Comprehend model for the training set contained by *unique-tweets-test.json*, and the accuracy and results analysis portion in *comparison.py*.
 
 ## data_analysis:
 This directory contains the cleaned csv file grabs for years 2011-2019. Additionally, it contains the directory archive_data_grabber. This directory contains the code used to download and process the archived historical Tweet data locally in biggrabber.py. Local_analysis is the directory to use when downloading day files locally (in the Archive Twitter Stream, day files are organized into small json file parcels). Local_analysis contains the preliminary local-analysis.py which parses through local Twitter data for curse words and writes them to local-*analysis-tweets.csv*. Biggrabber.py also uses *cleaner.py* in that same directory to clean tweets when processing them locally.
